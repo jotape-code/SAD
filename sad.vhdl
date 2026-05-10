@@ -81,7 +81,7 @@ architecture structure of sad is
 	signal SAD_resul: unsigned(sad_length(bits_per_sample, samples_per_block) - 1 downto 0);
 begin
 	wrapped: ENTITY work.sadWrapped 
-	generic map(
+    generic map(
 		CFG => (
 			samples_per_block => samples_per_block,
 			bits_per_sample => bits_per_sample,
