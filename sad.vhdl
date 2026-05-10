@@ -75,26 +75,33 @@ end entity sad;
 
 -- Não alterar o nome da arquitetura!
 architecture structure of sad is
-	signal temp_saidas: saidas_geral(dados(SAD(sad_length(bits_per_sample, samples_per_block)- 1 downto 0), address(address_length(samples_per_block, parallel_samples) - 1 downto 0)));
+	signal pronto: std_logic;
+	signal ler: std_logic;
+	signal add: unsigned(address_length(samples_per_block, parallel_samples) - 1 downto 0);
+	signal SAD_resul: unsigned(sad_length(bits_per_sample, samples_per_block) - 1 downto 0);
 begin
 	wrapped: ENTITY work.sadWrapped 
+	generic map(
+		CFG => (
+			samples_per_block => samples_per_block,
+			bits_per_sample => bits_per_sample,
+			parallel_samples => parallel_samples
+		)
+	)
 	Port map(clk => clk,
 		rst_a => rst_a,
-		entradas => (
-			dados => (
-				A => unsigned(sample_ori),
-				B => unsigned(sample_can)
-			),
-			controle => (
-				iniciar => enable
-			)
-		),
-		saidas => temp_saidas
+		A => unsigned(sample_ori),
+		B => unsigned(sample_can),
+		iniciar => enable,
+		pronto => pronto,
+		ler => ler,
+		address => add,
+		SAD => SAD_resul
 		);
 
-		read_mem <= temp_saidas.controle.ler;
-		address <= std_logic_vector(temp_saidas.dados.address);
-		sad_value <= std_logic_vector(temp_saidas.dados.SAD);
-		done <= temp_saidas.controle.pronto;
+		read_mem <= ler;
+		address <= std_logic_vector(add);
+		sad_value <= std_logic_vector(SAD_resul);
+		done <= pronto;
 		
 end architecture structure; 

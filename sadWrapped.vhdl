@@ -14,19 +14,29 @@ entity sadWrapped is
 	port(
         clk: in std_logic;
         rst_a: in std_logic;
-        entradas: in entradas_geral(dados(A(CFG.bits_per_sample -1 downto 0), B(CFG.bits_per_sample - 1 downto 0)));
-        saidas: out saidas_geral(dados(SAD(sad_length(CFG.bits_per_sample, CFG.samples_per_block)- 1 downto 0), address(address_length(CFG.samples_per_block, CFG.parallel_samples) - 1 downto 0)))
-		
+        A, B: in unsigned(CFG.bits_per_sample - 1 downto 0);
+        iniciar: in std_logic;
+	SAD: out unsigned(sad_length(CFG.bits_per_sample, CFG.samples_per_block) - 1 downto 0);
+        address: out unsigned(address_length(CFG.samples_per_block, CFG.parallel_samples) - 1 downto 0);
+        pronto: out std_logic;
+        ler: out std_logic
 	);
 end entity sadWrapped;
 
 architecture arch of sadWrapped is
-    signal comandos: controle_comandos;
-    signal status: controle_status;
+      signal  zi: std_logic;
+      signal  ci: std_logic;
+      signal  cpA: std_logic;
+      signal  cpB: std_logic;
+      signal  zsoma: std_logic;
+      signal  csoma: std_logic;
+      signal  csad_reg: std_logic;
+      signal menor: std_logic;
 begin
 	bc: ENTITY work.sad_bc
-	port map(clk => clk, rst_a => rst_a, entradas => entradas.controle, comandos => comandos, 
-	status => status, saidas => saidas.controle);
+	port map(clk => clk, rst_a => rst_a, iniciar => iniciar, pronto => pronto, zi => zi, ci => ci, cpA => cpA, cpB => cpB, ler => ler,
+                zsoma => zsoma, csoma => csoma, csad_reg => csad_reg, menor => menor
+	);
 	
 	bo: ENTITY work.sad_bo
 	generic map(CFG => (
@@ -37,9 +47,17 @@ begin
 	)
 	port map(
 	    clk => clk,
-	    entradas => entradas.dados,
-	    comandos => comandos,
-	    status => status,
-	    saidas => saidas.dados
+	    A => A,
+            B => B,
+            zi => zi,
+            ci => ci,
+            cpA => cpA,
+            cpB => cpB,
+            zsoma => zsoma,
+            csoma => csoma,
+            csad_reg => csad_reg,
+            SAD => SAD,
+            address => address,
+            menor => menor
 	);
 end architecture arch; 

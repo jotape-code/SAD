@@ -70,53 +70,6 @@ package sad_pack is
     function address_length(samples_per_block : positive; parallel_samples : positive)
     return positive;
     
-     type ent_dados is record
-        A: unsigned(7 downto 0);
-        B: unsigned(7 downto 0);
-    end record ent_dados;
-    
-    type ent_controle is record
-        iniciar: std_logic;
-    end record ent_controle;
-
-    type entradas_geral is record
-        dados: ent_dados;
-        controle: ent_controle;
-    end record entradas_geral;
-    
-
-    type saidas_dados is record
-          SAD: unsigned;
-          address: unsigned;
-
-    end record saidas_dados;
-
-
-    type saidas_controle is record
-        pronto: std_logic;
-        ler: std_logic;
-    end record saidas_controle;
-
-    type saidas_geral is record
-        dados: saidas_dados;
-        controle: saidas_controle;
-    end record saidas_geral;
-
-    
-
-    type controle_comandos is record
-        zi: std_logic;
-        ci: std_logic;
-        cpA: std_logic;
-        cpB: std_logic;
-        zsoma: std_logic;
-        csoma: std_logic;
-        csad_reg: std_logic;
-    end record controle_comandos;
-    
-    type controle_status is record
-        menor: std_logic;
-    end record controle_status;
 
 end package sad_pack;
 

@@ -21,13 +21,14 @@ architecture arch of adressCa is
     signal resul_soma: unsigned(address_len downto 0);
     signal mux_saida: std_logic_vector(address_len downto 0);
     signal reg_saida: unsigned(address_len downto 0);
+    constant ZERO_VEC : std_logic_vector(address_len downto 0) := (others => '0');
 begin
     mux: ENTITY work.mux_2to1
     GENERIC map(
         N =>address_len + 1
     )
     port map(
-        sel => sel_mux, in_0 =>std_logic_vector(resul_soma), in_1 => std_logic_vector'(others => '0'), y => mux_saida
+        sel => sel_mux, in_0 =>std_logic_vector(resul_soma), in_1 => ZERO_VEC, y => mux_saida
     );
 
     reg: ENTITY work.unsigned_register

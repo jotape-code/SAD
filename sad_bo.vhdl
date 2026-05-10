@@ -44,10 +44,18 @@ entity sad_bo is
 	);
 	port(
 		clk : in std_logic;
-		entradas: in ent_dados(A(CFG.bits_per_sample - 1 downto 0), B(CFG.bits_per_sample - 1 downto 0));
-        comandos: in controle_comandos;
-        saidas: out saidas_dados(SAD(sad_length(CFG.bits_per_sample, CFG.samples_per_block)- 1 downto 0), address(address_length(CFG.samples_per_block, CFG.parallel_samples) - 1 downto 0));
-        status: out controle_status
+        A: in unsigned(CFG.bits_per_sample - 1 downto 0);
+        B: in unsigned(CFG.bits_per_sample - 1 downto 0);
+        zi: in std_logic;
+        ci: in std_logic;
+        cpA: in std_logic;
+        cpB: in std_logic;
+        zsoma: in std_logic;
+        csoma: in std_logic;
+        csad_reg: in std_logic;
+        SAD: out unsigned(sad_length(CFG.bits_per_sample, CFG.samples_per_block)- 1 downto 0);
+        address: out unsigned(address_length(CFG.samples_per_block, CFG.parallel_samples) - 1 downto 0);
+        menor: out std_logic
 	);
 end entity;
 -- Não altere o nome da entidade! Como você quem irá instanciar, neste caso podes
@@ -65,10 +73,10 @@ begin
         )
         port map(
             clk        => clk,
-            enable     => comandos.ci,
-            sel_mux    => comandos.zi,
-            address    => saidas.address,
-            menor => status.menor
+            enable     => ci,
+            sel_mux    => zi,
+            address    => address,
+            menor => menor
         );
      
     
@@ -79,14 +87,14 @@ begin
         )
         port map(
             clk      => clk,
-            cpA      => comandos.cpA,
-            cpB      => comandos.cpB,
-            csoma    => comandos.csoma,
-            zsoma    => comandos.zsoma,
-            csad_reg => comandos.csad_reg,
-            A        => entradas.A,
-            B        => entradas.B,
-            SAD      => saidas.SAD
+            cpA      => cpA,
+            cpB      => cpB,
+            csoma    => csoma,
+            zsoma    => zsoma,
+            csad_reg => csad_reg,
+            A        => A,
+            B        => B,
+            SAD      => SAD
         );
     
 end architecture structure;

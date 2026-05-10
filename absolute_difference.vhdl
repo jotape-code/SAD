@@ -40,7 +40,8 @@ begin
     dif1 <= signed(resize(input_a, N+1)) - signed(resize(input_b, N+1));
     dif2 <= signed(resize(input_b, N+1)) - signed(resize(input_a, N+1));
     mux: ENTITY work.mux_2to1
-    GENERIC map(N)
+    GENERIC map(N => N
+        )
     Port map(sel => std_logic(dif1(N)), in_0 => std_logic_vector(dif1(N-1 downto 0)), in_1 => std_logic_vector(dif2(N-1 downto 0)), y => saida);
     abs_diff <= unsigned(saida);
     
