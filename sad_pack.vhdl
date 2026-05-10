@@ -71,8 +71,8 @@ package sad_pack is
     return positive;
     
      type ent_dados is record
-        A: unsigned(7 downto 0);
-        B: unsigned(7 downto 0);
+        A: unsigned;
+        B: unsigned;
     end record ent_dados;
     
     type ent_controle is record

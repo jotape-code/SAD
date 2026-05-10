@@ -78,6 +78,13 @@ architecture structure of sad is
 	signal temp_saidas: saidas_geral(dados(SAD(sad_length(bits_per_sample, samples_per_block)- 1 downto 0), address(address_length(samples_per_block, parallel_samples) - 1 downto 0)));
 begin
 	wrapped: ENTITY work.sadWrapped 
+	generic map(
+		CFG => (
+			samples_per_block => samples_per_block,
+			bits_per_sample => bits_per_sample,
+			parallel_samples => parallel_samples
+		)
+	)
 	Port map(clk => clk,
 		rst_a => rst_a,
 		entradas => (
